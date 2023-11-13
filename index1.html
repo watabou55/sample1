@@ -13,6 +13,8 @@
     <button id="refresh">更新</button>
     <button id="running">継続</button>
     <script>
+      Element.prototype
+
       // N桁の数値を0埋めN桁の文字列で返す
       function padZero(value, maxLength) {
         return value.toString().padStart(maxLength, '0');
@@ -61,14 +63,14 @@
       document.addEventListener('DOMContentLoaded', () => {
 
         // 現在時刻を表示
-        const span = document.getElementById('time');
-        span.innerText = getTimeNowStr();
+        const time = document.getElementById('time');
+        time.innerText = getTimeNowStr();
 
-        // 更新ボタン押下で現在時刻の表示更新
+        // 更新ボタン押下で現在時刻表示を更新
         let button = document.getElementById('refresh');
-        button.addEventListener('click', () => span.innerText = getTimeNowStr());
+        button.addEventListener('click', () => time.innerText = getTimeNowStr());
 
-        // 継続ボタン押下で現在時刻の継続表示更新
+        // 継続ボタン押下で現在時刻表示を継続更新
         let interval = 0;
         button = document.getElementById('running');
         button.addEventListener('click', () => {
@@ -77,7 +79,7 @@
             button.innerText = '継続';
           }
           else {
-            interval = setInterval(() => span.innerText = getTimeNowStr(), 1);
+            interval = setInterval(() => time.innerText = getTimeNowStr(), 1);
             button.innerText = '停止';
           }
           button.toggleClass('running');
