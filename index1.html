@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>テスト3</title>
+  </head>
+  <body>
+    <h3>現在時刻 <span id="time"></span></h3>
+    <button id="refresh">更新</button>
+    <button id="running">継続</button>
+    <script>
+      Element.prototype
+
+      // N桁の数値を0埋めN桁の文字列で返す
+      function padZero(value, maxLength) {
+        return value.toString().padStart(maxLength, '0');
+      }
+
+      // 指定日の曜日を返す
+      function getYoubi(day, kakko = false) {
+        const youbi = ['日','月','火','水','木','金','土'][day % 7];
+        return kakko ? '（' + youbi + '）' : youbi;
+      }
+
+      // 現在時刻を文字列で返す
+      function getTimeNowStr() {
+        const now = new Date();
+        return now.getFullYear() + '/' +
+               padZero(now.getMonth() + 1, 2) + '/' +
+               padZero(now.getDate(), 2) +
+               getYoubi(now.getDay(), true) +
+               padZero(now.getHours(), 2) + ':' +
+               padZero(now.getMinutes(), 2) + ':' +
+               padZero(now.getSeconds(), 2) + '.' +
+               padZero(now.getMilliseconds(), 3);
+      }
+
+      // 要素が指定のクラス名を持つかを判定
+      Element.prototype.hasClass = function(className) {
+        return this.classList.contains(className);
+      };
+
+      // 要素に指定のクラス名を追加
+      Element.prototype.addClass = function(className) {
+        this.classList.add(className);
+      }
+
+      // 要素から指定のクラス名を削除
+      Element.prototype.removeClass = function(className) {
+        this.classList.remove(className);
+      }
+
+      // 要素に指定のクラス名を追加/削除
+      Element.prototype.toggleClass = function(className) {
+        this.classList.toggle(className);
+      }
+
+      // ドキュメントロード完了時
+      document.addEventListener('DOMContentLoaded', () => {
+
+        // 現在時刻を表示
+        const span = document.getElementById('time');
+        span.innerText = getTimeNowStr();
+
+        // 更新ボタン押下で現在時刻の表示更新
+        let button = document.getElementById('refresh');
+        button.addEventListener('click', () => span.innerText = getTimeNowStr());
+
+        // 継続ボタン押下で現在時刻の継続表示更新
+        let interval = 0;
+        button = document.getElementById('running');
+        button.addEventListener('click', () => {
+          if (button.hasClass('running')) {
+            clearInterval(interval);
+            button.innerText = '継続';
+          }
+          else {
+            interval = setInterval(() => span.innerText = getTimeNowStr(), 1);
+            button.innerText = '停止';
+          }
+          button.toggleClass('running');
+        })
+      });
+    </script>
+  </body>
+</html>
