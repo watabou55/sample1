@@ -68,7 +68,7 @@
         let button = document.getElementById('refresh');
         button.addEventListener('click', () => time.innerText = getTimeNowStr());
 
-        // 継続ボタン押下で現在時刻表示を継続更新
+        // 継続ボタン押下で現在時刻表示更新を継続/停止
         let interval = 0;
         button = document.getElementById('running');
         button.addEventListener('click', () => {
